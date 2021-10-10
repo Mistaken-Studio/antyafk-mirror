@@ -50,7 +50,7 @@ namespace Mistaken.AntyAFK
         internal static readonly Dictionary<int, (int value, Vector3 lastPosition)> AfkPosition = new Dictionary<int, (int value, Vector3 lastPosition)>();
 
         private const string AfkMessage =
-            @"<size=40><voffset=20em>
+            @"<size=40><voffset=1em>
             <color=red><b><size=200>WARNING</size></b></color>
             <br><br><br><br><br>
             You have <color=yellow>{sLeft} seconds</color> to move or type '<color=yellow>.notafk</color>' in console('<color=yellow>~</color>')<br>
@@ -73,8 +73,8 @@ namespace Mistaken.AntyAFK
             int rid = RoundPlus.RoundId;
             while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
-                this.CheckForAfk(1);
-                yield return Timing.WaitForSeconds(1);
+                this.CheckForAfk(5);
+                yield return Timing.WaitForSeconds(5);
             }
         }
 
@@ -82,7 +82,7 @@ namespace Mistaken.AntyAFK
         {
             foreach (var player in RealPlayers.List.Where(p => p.IsAlive && p.Role != RoleType.Scp079 && !p.GetEffectActive<CustomPlayerEffects.Ensnared>()).ToArray())
             {
-                if (player.CheckPermission(PluginHandler.Instance.Name + ".anti_afk_kick_proof") && false)
+                if (player.CheckPermission(PluginHandler.Instance.Name + ".anti_afk_kick_proof"))
                     continue;
                 var ppos = player.Position;
                 if (AfkPosition.TryGetValue(player.Id, out var value))
@@ -96,21 +96,21 @@ namespace Mistaken.AntyAFK
 
                         AfkPosition[player.Id] = (level + seconds, ppos);
 
-                        switch (level + 1)
+                        switch (level + seconds)
                         {
-                            case 120:
-                                {
-                                    RLogger.Log("ANTY AFK", "WARN", $"{player.PlayerToString()} was warned for being afk");
-                                    this.RunCoroutine(this.InformAFK(player), "InformAFK");
-
-                                    break;
-                                }
-
-                            case 180:
+                            case int x when x >= 180:
                                 {
                                     player.Disconnect("Anti AFK: You were AFK");
                                     RLogger.Log("ANTY AFK", "DISCONNECT", $"{player.PlayerToString()} was disconnected for being afk");
                                     MapPlus.Broadcast("Anti AFK", 10, $"{player.Nickname} was disconnected for being AFK", Broadcast.BroadcastFlags.AdminChat);
+
+                                    break;
+                                }
+
+                            case int x when x >= 120:
+                                {
+                                    RLogger.Log("ANTY AFK", "WARN", $"{player.PlayerToString()} was warned for being afk");
+                                    this.RunCoroutine(this.InformAFK(player), "InformAFK");
 
                                     break;
                                 }
@@ -147,6 +147,8 @@ namespace Mistaken.AntyAFK
 
                 yield return Timing.WaitForSeconds(1);
             }
+
+            PseudoGUIHandler.StopIgnore(p);
         }
     }
 }
