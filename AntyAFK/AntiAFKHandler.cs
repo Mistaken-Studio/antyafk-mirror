@@ -36,15 +36,15 @@ namespace Mistaken.AntyAFK
         /// <inheritdoc/>
         public override void OnEnable()
         {
-            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => this.Server_RoundStarted(), "RoundStart");
-            Exiled.Events.Handlers.Server.RestartingRound += this.Handle(() => this.Server_RestartingRound(), "RoundRestart");
+            Exiled.Events.Handlers.Server.RoundStarted += this.Server_RoundStarted;
+            Exiled.Events.Handlers.Server.RestartingRound += this.Server_RestartingRound;
         }
 
         /// <inheritdoc/>
         public override void OnDisable()
         {
-            Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => this.Server_RoundStarted(), "RoundStart");
-            Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => this.Server_RestartingRound(), "RoundRestart");
+            Exiled.Events.Handlers.Server.RoundStarted -= this.Server_RoundStarted;
+            Exiled.Events.Handlers.Server.RestartingRound -= this.Server_RestartingRound;
         }
 
         internal static readonly Dictionary<int, (int value, Vector3 lastPosition)> AfkPosition = new Dictionary<int, (int value, Vector3 lastPosition)>();
@@ -91,7 +91,7 @@ namespace Mistaken.AntyAFK
                     Vector3 pos = value.lastPosition;
                     if (pos.x == ppos.x && pos.y == ppos.y && pos.z == ppos.z)
                     {
-                        if (player.GetSessionVar<bool>(SessionVarType.TALK))
+                        if (player.GetSessionVariable<bool>(SessionVarType.TALK))
                             continue;
 
                         AfkPosition[player.Id] = (level + seconds, ppos);
