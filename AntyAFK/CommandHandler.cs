@@ -1,20 +1,11 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="AntiAFKHandler.cs" company="Mistaken">
+// <copyright file="CommandHandler.cs" company="Mistaken">
 // Copyright (c) Mistaken. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Linq;
-using Exiled.API.Features;
-using MEC;
-using Mistaken.API;
 using Mistaken.API.Commands;
-using Mistaken.API.Diagnostics;
 using Mistaken.API.Extensions;
-using Mistaken.API.GUI;
-using Mistaken.RoundLogger;
-using UnityEngine;
 
 namespace Mistaken.AntyAFK
 {
