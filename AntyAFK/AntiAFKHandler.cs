@@ -80,7 +80,7 @@ namespace Mistaken.AntyAFK
 
         private void CheckForAfk(int seconds)
         {
-            foreach (var player in RealPlayers.List.Where(p => p.IsAlive && p.Role != RoleType.Scp079 && !p.GetEffectActive<CustomPlayerEffects.Ensnared>()).ToArray())
+            foreach (var player in RealPlayers.List.Where(p => p.IsAlive && p.Role.Type != RoleType.Scp079 && !p.GetEffectActive<CustomPlayerEffects.Ensnared>()).ToArray())
             {
                 if (player.CheckPermission(PluginHandler.Instance.Name + ".anti_afk_kick_proof"))
                     continue;
