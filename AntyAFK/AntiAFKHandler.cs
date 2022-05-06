@@ -129,7 +129,7 @@ namespace Mistaken.AntyAFK
             PseudoGUIHandler.Ignore(p);
             for (int i = 60; i > -1; i--)
             {
-                if (p.IsConnected && AfkPosition.TryGetValue(p.Id, out var value))
+                if (p.IsConnected && p.Connection != null && AfkPosition.TryGetValue(p.Id, out var value))
                 {
                     if (value.value >= 120)
                         p.ShowHint(AfkMessage.Replace("{sLeft}", i.ToString("00")), 2);
