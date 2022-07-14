@@ -100,6 +100,7 @@ namespace Mistaken.AntyAFK
                         {
                             case int x when x >= 180:
                                 {
+                                    AfkPosition.Remove(player.Id);
                                     player.Disconnect("Anti AFK: You were AFK");
                                     RLogger.Log("ANTY AFK", "DISCONNECT", $"{player.PlayerToString()} was disconnected for being afk");
                                     MapPlus.Broadcast("Anti AFK", 10, $"{player.Nickname} was disconnected for being AFK", Broadcast.BroadcastFlags.AdminChat);
