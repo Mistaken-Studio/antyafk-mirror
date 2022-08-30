@@ -7,6 +7,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Exiled.API.Features;
+using Exiled.Permissions.Extensions;
 using MEC;
 using Mistaken.API;
 using Mistaken.API.Commands;
@@ -82,7 +83,7 @@ namespace Mistaken.AntyAFK
         {
             foreach (var player in RealPlayers.List.Where(p => p.IsAlive && p.Role.Type != RoleType.Scp079 && !p.GetEffectActive<CustomPlayerEffects.Ensnared>()).ToArray())
             {
-                if (player.CheckPermission(PluginHandler.Instance.Name + ".anti_afk_kick_proof"))
+                if (Permissions.CheckPermission(player, PluginHandler.Instance.Name + ".anti_afk_kick_proof"))
                     continue;
                 var ppos = player.Position;
                 if (AfkPosition.TryGetValue(player.Id, out var value))
